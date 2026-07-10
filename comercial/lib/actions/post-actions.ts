@@ -23,6 +23,10 @@ export async function createPost(formData: FormData) {
     redirect('/admin/login')
   }
 
+  const coverImageUrl = String(
+  formData.get('cover_image_url') || ''
+  )
+
   const { error } = await supabase.from('posts').insert({
     title,
     slug,
@@ -30,7 +34,9 @@ export async function createPost(formData: FormData) {
     content,
     status,
     author_id: user.id,
+    cover_image_url: coverImageUrl || null,
     published_at: status === 'published' ? new Date().toISOString() : null,
+    
   })
 
   if (error) {
@@ -62,6 +68,10 @@ export async function updatePost(id: string, formData: FormData) {
   const shouldSetPublishedAt =
     status === 'published' && !currentPost?.published_at
 
+  const coverImageUrl = String(
+  formData.get('cover_image_url') || ''
+  )  
+
   const { error } = await supabase
     .from('posts')
     .update({
@@ -70,6 +80,7 @@ export async function updatePost(id: string, formData: FormData) {
       excerpt,
       content,
       status,
+      cover_image_url: coverImageUrl || null,
       published_at: shouldSetPublishedAt
         ? new Date().toISOString()
         : currentPost?.published_at ?? null,

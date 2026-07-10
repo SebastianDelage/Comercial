@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import PostForm from '@/components/admin/PostForm'
+import PageHeader from '@/components/ui/PageHeader'
 import { getPostById } from '@/lib/queries/posts'
 
 type EditPostPageProps = {
@@ -8,9 +9,10 @@ type EditPostPageProps = {
   }>
 }
 
-export default async function EditPostPage({ params }: EditPostPageProps) {
+export default async function EditPostPage({
+  params,
+}: EditPostPageProps) {
   const { id } = await params
-
   const post = await getPostById(id)
 
   if (!post) {
@@ -19,11 +21,12 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
 
   return (
     <section>
-      <h1 className="text-3xl font-bold">Editar noticia</h1>
+      <PageHeader
+        title="Editar noticia"
+        description="Actualizá el contenido o cambiá su estado."
+      />
 
-      <div className="mt-6">
-        <PostForm post={post} />
-      </div>
+      <PostForm post={post} />
     </section>
   )
 }

@@ -1,38 +1,41 @@
 import Link from 'next/link'
 import { logoutAdmin } from '@/lib/actions/auth-actions'
 
+const links = [
+  { href: '/admin', label: 'Dashboard' },
+  { href: '/admin/posts', label: 'Noticias' },
+  { href: '/admin/pages', label: 'Páginas' },
+  { href: '/admin/gallery', label: 'Galería' },
+  { href: '/admin/settings', label: 'Configuración' },
+]
+
 export default function AdminSidebar() {
   return (
-    <aside className="w-64 border-r bg-white p-6">
-      <h2 className="mb-8 text-xl font-bold">Panel Admin</h2>
+    <aside className="flex min-h-screen w-72 flex-col bg-cyan-600 text-white">
+      <div className="border-b border-white/20 p-6">
+        <div className="text-2xl font-bold">CRC</div>
+        <p className="text-sm text-cyan-100">Panel administrativo</p>
+      </div>
 
-      <nav className="space-y-3">
-        <Link href="/admin" className="block rounded px-3 py-2 hover:bg-gray-100">
-          Dashboard
-        </Link>
-
-        <Link href="/admin/posts" className="block rounded px-3 py-2 hover:bg-gray-100">
-          Noticias
-        </Link>
-
-        <Link href="/admin/pages" className="block rounded px-3 py-2 hover:bg-gray-100">
-          Páginas
-        </Link>
-
-        <Link href="/admin/gallery" className="block rounded px-3 py-2 hover:bg-gray-100">
-          Galería
-        </Link>
-
-        <Link href="/admin/settings" className="block rounded px-3 py-2 hover:bg-gray-100">
-          Configuración
-        </Link>
+      <nav className="flex-1 space-y-2 p-4">
+        {links.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className="block rounded-xl px-4 py-3 text-sm font-medium hover:bg-white/15"
+          >
+            {link.label}
+          </Link>
+        ))}
       </nav>
 
-      <form action={logoutAdmin} className="mt-10">
-        <button className="w-full rounded bg-red-600 px-3 py-2 text-white">
-          Cerrar sesión
-        </button>
-      </form>
+      <div className="border-t border-white/20 p-4">
+        <form action={logoutAdmin}>
+          <button className="w-full rounded-xl bg-white px-4 py-3 text-sm font-medium text-cyan-700 hover:bg-cyan-50">
+            Cerrar sesión
+          </button>
+        </form>
+      </div>
     </aside>
   )
 }

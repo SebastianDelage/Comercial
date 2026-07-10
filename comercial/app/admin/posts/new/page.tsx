@@ -1,12 +1,15 @@
 import PostForm from '@/components/admin/PostForm'
+import PageHeader from '@/components/ui/PageHeader'
 
 export default function NewPostPage() {
   return (
     <section>
-      <h1 className="text-3xl font-bold">Nueva noticia</h1>
-      <div className="mt-6">
-        <PostForm />
-      </div>
+      <PageHeader
+        title="Nueva noticia"
+        description="Completá los datos para crear una publicación."
+      />
+
+      <PostForm />
     </section>
   )
 }

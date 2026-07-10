@@ -1,4 +1,7 @@
 import { createPost, updatePost } from '@/lib/actions/post-actions'
+import Button from '@/components/ui/Button'
+import Card from '@/components/ui/Card'
+import ImageUploader from '@/components/admin/ImageUploader'
 
 type PostFormProps = {
   post?: {
@@ -6,6 +9,7 @@ type PostFormProps = {
     title: string
     excerpt: string | null
     content: string
+    cover_image_url: string | null
     status: 'draft' | 'published'
   }
 }
@@ -16,59 +20,99 @@ export default function PostForm({ post }: PostFormProps) {
     : createPost
 
   return (
-    <form action={action} className="max-w-3xl space-y-5">
-      <div>
-        <label className="block text-sm font-medium">Título</label>
-        <input
-          name="title"
-          required
-          defaultValue={post?.title ?? ''}
-          className="mt-1 w-full rounded border px-3 py-2"
-          placeholder="Título de la noticia"
-        />
-      </div>
+    <form action={action}>
+      <Card>
+        <div className="space-y-6">
+          <div>
+            <label
+              htmlFor="title"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Título
+            </label>
 
-      <div>
-        <label className="block text-sm font-medium">Resumen</label>
-        <textarea
-          name="excerpt"
-          defaultValue={post?.excerpt ?? ''}
-          className="mt-1 w-full rounded border px-3 py-2"
-          placeholder="Resumen breve"
-          rows={3}
-        />
-      </div>
+            <input
+              id="title"
+              name="title"
+              required
+              defaultValue={post?.title ?? ''}
+              placeholder="Ej.: Gran victoria del equipo de primera"
+              className="mt-2 w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+            />
+          </div>
 
-      <div>
-        <label className="block text-sm font-medium">Contenido</label>
-        <textarea
-          name="content"
-          required
-          defaultValue={post?.content ?? ''}
-          className="mt-1 w-full rounded border px-3 py-2"
-          placeholder="Contenido completo de la noticia"
-          rows={10}
-        />
-      </div>
+          <div>
+            <label
+              htmlFor="excerpt"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Resumen
+            </label>
 
-      <div>
-        <label className="block text-sm font-medium">Estado</label>
-        <select
-          name="status"
-          className="mt-1 w-full rounded border px-3 py-2"
-          defaultValue={post?.status ?? 'draft'}
-        >
-          <option value="draft">Borrador</option>
-          <option value="published">Publicado</option>
-        </select>
-      </div>
+            <textarea
+              id="excerpt"
+              name="excerpt"
+              defaultValue={post?.excerpt ?? ''}
+              placeholder="Una descripción breve para mostrar en el listado."
+              rows={3}
+              className="mt-2 w-full resize-y rounded-xl border border-gray-300 px-4 py-3 text-gray-900 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+            />
+          </div>
 
-      <button
-        type="submit"
-        className="rounded bg-black px-5 py-2 text-white"
-      >
-        {post ? 'Actualizar noticia' : 'Guardar noticia'}
-      </button>
+          <div>
+            <label
+              htmlFor="content"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Contenido
+            </label>
+
+            <textarea
+              id="content"
+              name="content"
+              required
+              defaultValue={post?.content ?? ''}
+              placeholder="Escribí el contenido completo de la noticia."
+              rows={14}
+              className="mt-2 w-full resize-y rounded-xl border border-gray-300 px-4 py-3 text-gray-900 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+            />
+          </div>
+
+          <ImageUploader initialUrl={post?.cover_image_url} />
+
+          <div>
+            <label
+              htmlFor="status"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Estado
+            </label>
+
+            <select
+              id="status"
+              name="status"
+              defaultValue={post?.status ?? 'draft'}
+              className="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+            >
+              <option value="draft">Borrador</option>
+              <option value="published">Publicado</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="mt-8 flex items-center justify-end gap-3 border-t border-gray-100 pt-6">
+          <Button
+            href="/admin/posts"
+            variant="secondary"
+          >
+            Cancelar
+          </Button>
+
+          <Button type="submit">
+            {post ? 'Actualizar noticia' : 'Guardar noticia'}
+          </Button>
+        </div>
+      </Card>
     </form>
   )
 }

@@ -36,9 +36,17 @@ export async function getPostBySlug(slug: string) {
 
   const { data, error } = await supabase
     .from('posts')
-    .select('id, title, slug, excerpt, content, cover_image_url, published_at')
+    .select(`
+      id,
+      title,
+      slug,
+      excerpt,
+      content,
+      cover_image_url,
+      status,
+      published_at
+    `)
     .eq('slug', slug)
-    .eq('status', 'published')
     .single()
 
   if (error) {
@@ -53,7 +61,7 @@ export async function getPostById(id: string) {
 
   const { data, error } = await supabase
     .from('posts')
-    .select('id, title, slug, excerpt, content, status')
+    .select('id, title, slug, excerpt, content, status, cover_image_url')
     .eq('id', id)
     .single()
 
