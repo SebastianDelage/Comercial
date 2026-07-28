@@ -70,19 +70,31 @@ export default async function AdminPostsPage() {
                       </div>
                     </td>
 
-                    <td className="px-4 py-4">
-                      <Badge
-                        variant={
-                          post.status === 'published'
-                            ? 'success'
-                            : 'draft'
-                        }
-                      >
-                        {post.status === 'published'
-                          ? 'Publicada'
-                          : 'Borrador'}
-                      </Badge>
-                    </td>
+                      <td className="px-4 py-4">
+                        <div className="flex items-center gap-4">
+                          {post.cover_image_url ? (
+                            <img
+                              src={post.cover_image_url}
+                              alt={post.title}
+                              className="h-14 w-20 rounded-lg object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-14 w-20 items-center justify-center rounded-lg bg-gray-100 text-xs text-gray-400">
+                              Sin imagen
+                            </div>
+                          )}
+
+                          <div>
+                            <p className="font-semibold text-gray-900">
+                              {post.title}
+                            </p>
+
+                            <p className="mt-1 text-xs text-gray-500">
+                              /noticias/{post.slug}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
 
                     <td className="px-4 py-4 text-gray-600">
                       {new Date(post.created_at).toLocaleDateString('es-AR')}

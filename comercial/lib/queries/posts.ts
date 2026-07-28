@@ -5,7 +5,15 @@ export async function getAdminPosts() {
 
   const { data, error } = await supabase
     .from('posts')
-    .select('id, title, slug, status, published_at, created_at')
+    .select(`
+      id,
+      title,
+      slug,
+      status,
+      cover_image_url,
+      published_at,
+      created_at
+    `)
     .order('created_at', { ascending: false })
 
   if (error) {

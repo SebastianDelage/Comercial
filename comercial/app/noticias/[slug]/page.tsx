@@ -44,9 +44,12 @@ export default async function PostPage({
           </p>
         )}
 
-        <div className="mt-8 whitespace-pre-line text-base leading-8 text-gray-800">
-          {post.content}
-        </div>
+        <div
+          className="rich-content mt-8 text-base leading-8 text-gray-800"
+          dangerouslySetInnerHTML={{
+            __html: post.content,
+          }}
+        />
       </article>
     </main>
   )

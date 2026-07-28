@@ -2,6 +2,7 @@ import { createPost, updatePost } from '@/lib/actions/post-actions'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import ImageUploader from '@/components/admin/ImageUploader'
+import RichTextEditor from '@/components/admin/RichTextEditor'
 
 type PostFormProps = {
   post?: {
@@ -49,14 +50,19 @@ export default function PostForm({ post }: PostFormProps) {
               Resumen
             </label>
 
-            <textarea
-              id="excerpt"
-              name="excerpt"
-              defaultValue={post?.excerpt ?? ''}
-              placeholder="Una descripción breve para mostrar en el listado."
-              rows={3}
-              className="mt-2 w-full resize-y rounded-xl border border-gray-300 px-4 py-3 text-gray-900 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
-            />
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Contenido
+              </label>
+
+              <div className="mt-2">
+                <RichTextEditor
+                  name="content"
+                  initialContent={post?.content ?? ''}
+                  placeholder="Escribí el contenido completo de la noticia."
+                />
+              </div>
+</div>
           </div>
 
           <div>

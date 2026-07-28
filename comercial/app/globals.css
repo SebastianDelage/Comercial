@@ -1,5 +1,57 @@
 @import "tailwindcss";
 
-body {
-  margin: 0;
+.ProseMirror {
+  min-height: 320px;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+
+.rich-content h2,
+.ProseMirror h2 {
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.rich-content p,
+.ProseMirror p {
+  margin: 0.75rem 0;
+}
+
+.rich-content ul,
+.ProseMirror ul {
+  margin: 1rem 0;
+  padding-left: 1.75rem;
+  list-style-type: disc;
+}
+
+.rich-content ol,
+.ProseMirror ol {
+  margin: 1rem 0;
+  padding-left: 1.75rem;
+  list-style-type: decimal;
+}
+
+.rich-content li,
+.ProseMirror li {
+  margin: 0.35rem 0;
+}
+
+.rich-content blockquote,
+.ProseMirror blockquote {
+  margin: 1.25rem 0;
+  border-left: 4px solid #06b6d4;
+  background: #ecfeff;
+  padding: 0.75rem 1rem;
+  color: #374151;
+}
+
+.rich-content a,
+.ProseMirror a {
+  color: #0891b2;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
