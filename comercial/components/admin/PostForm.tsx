@@ -62,27 +62,9 @@ export default function PostForm({ post }: PostFormProps) {
                   placeholder="Escribí el contenido completo de la noticia."
                 />
               </div>
-</div>
           </div>
+        </div>
 
-          <div>
-            <label
-              htmlFor="content"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Contenido
-            </label>
-
-            <textarea
-              id="content"
-              name="content"
-              required
-              defaultValue={post?.content ?? ''}
-              placeholder="Escribí el contenido completo de la noticia."
-              rows={14}
-              className="mt-2 w-full resize-y rounded-xl border border-gray-300 px-4 py-3 text-gray-900 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
-            />
-          </div>
 
           <ImageUploader initialUrl={post?.cover_image_url} />
 
