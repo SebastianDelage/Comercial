@@ -18,6 +18,7 @@ const initialErrorState: SettingsFormState = {
 
 function optionalValue(formData: FormData, field: string) {
   const value = String(formData.get(field) ?? '').trim()
+
   return value || null
 }
 
@@ -28,6 +29,7 @@ function isValidOptionalUrl(value: string | null) {
 
   try {
     const url = new URL(value)
+
     return url.protocol === 'http:' || url.protocol === 'https:'
   } catch {
     return false
@@ -109,31 +111,103 @@ export async function updateSiteSettings(
 
   const settings = {
     id: 'general',
+
     club_name: clubName,
+
     short_description: optionalValue(
       formData,
       'short_description'
     ),
 
-    logo_url: optionalValue(formData, 'logo_url'),
-    logo_path: optionalValue(formData, 'logo_path'),
+    // Logo
+    logo_url: optionalValue(
+      formData,
+      'logo_url'
+    ),
 
-    favicon_url: optionalValue(formData, 'favicon_url'),
+    logo_path: optionalValue(
+      formData,
+      'logo_path'
+    ),
+
+    // Favicon
+    favicon_url: optionalValue(
+      formData,
+      'favicon_url'
+    ),
+
     favicon_path: optionalValue(
       formData,
       'favicon_path'
     ),
 
+    // Imagen principal de la Home
+    hero_image_url: optionalValue(
+      formData,
+      'hero_image_url'
+    ),
+
+    hero_image_path: optionalValue(
+      formData,
+      'hero_image_path'
+    ),
+
+    // Imagen de Rugby
+    rugby_image_url: optionalValue(
+      formData,
+      'rugby_image_url'
+    ),
+
+    rugby_image_path: optionalValue(
+      formData,
+      'rugby_image_path'
+    ),
+
+    // Imagen de Hockey
+    hockey_image_url: optionalValue(
+      formData,
+      'hockey_image_url'
+    ),
+
+    hockey_image_path: optionalValue(
+      formData,
+      'hockey_image_path'
+    ),
+
+    // Imagen institucional
+    history_image_url: optionalValue(
+      formData,
+      'history_image_url'
+    ),
+
+    history_image_path: optionalValue(
+      formData,
+      'history_image_path'
+    ),
+
+    // Contacto
     contact_email: contactEmail,
-    phone: optionalValue(formData, 'phone'),
+
+    phone: optionalValue(
+      formData,
+      'phone'
+    ),
+
     whatsapp_number: optionalValue(
       formData,
       'whatsapp_number'
     ),
-    address: optionalValue(formData, 'address'),
 
+    address: optionalValue(
+      formData,
+      'address'
+    ),
+
+    // Redes sociales
     instagram_url: instagramUrl,
+
     facebook_url: facebookUrl,
+
     youtube_url: youtubeUrl,
   }
 

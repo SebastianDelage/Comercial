@@ -169,62 +169,82 @@ export default function SettingsForm({
           </p>
         </div>
 
-        <div className="mt-6 grid gap-8 lg:grid-cols-2">
-          <div>
-            <p className="mb-2 text-sm font-medium text-gray-700">
-              Logo
-            </p>
-
+          <div className="grid gap-8 lg:grid-cols-2">
             <ImageUploader
-              initialUrl={settings?.logo_url ?? ''}
-            />
-
-            <input
-              type="hidden"
               name="logo_url"
-              defaultValue={settings?.logo_url ?? ''}
+              pathName="logo_path"
+              defaultValue={settings?.logo_url}
+              defaultPath={settings?.logo_path}
+              folder="settings/logo"
+              label="Logo"
+              description="Logo principal del club."
             />
-
-            <input
-              type="hidden"
-              name="logo_path"
-              defaultValue={settings?.logo_path ?? ''}
-            />
-
-            <p className="mt-2 text-xs text-gray-500">
-              Preferentemente PNG o WebP con fondo
-              transparente.
-            </p>
-          </div>
-
-          <div>
-            <p className="mb-2 text-sm font-medium text-gray-700">
-              Favicon
-            </p>
 
             <ImageUploader
-              initialUrl={settings?.favicon_url ?? ''}
-            />
-
-            <input
-              type="hidden"
               name="favicon_url"
-              defaultValue={settings?.favicon_url ?? ''}
+              pathName="favicon_path"
+              defaultValue={settings?.favicon_url}
+              defaultPath={settings?.favicon_path}
+              folder="settings/favicon"
+              label="Favicon"
+              description="Usá preferentemente una imagen cuadrada."
             />
-
-            <input
-              type="hidden"
-              name="favicon_path"
-              defaultValue={settings?.favicon_path ?? ''}
-            />
-
-            <p className="mt-2 text-xs text-gray-500">
-              Usá una imagen cuadrada y sencilla.
-            </p>
           </div>
-        </div>
       </Card>
+              {/* Imágenes de la página de inicio */}
+      <section className="rounded-2xl border border-gray-200 bg-white p-6">
+        <div className="border-b border-gray-100 pb-5">
+          <h2 className="text-lg font-bold text-gray-950">
+            Imágenes de la página de inicio
+          </h2>
 
+          <p className="mt-1 text-sm text-gray-500">
+            Imágenes utilizadas en las principales secciones de la portada.
+          </p>
+        </div>
+
+      <div className="mt-6 grid gap-8 lg:grid-cols-2">
+        <ImageUploader
+          name="hero_image_url"
+          pathName="hero_image_path"
+          defaultValue={settings?.hero_image_url}
+          defaultPath={settings?.hero_image_path}
+          folder="home/hero"
+          label="Imagen principal"
+          description="Imagen grande que aparece al ingresar al sitio."
+        />
+
+        <ImageUploader
+          name="rugby_image_url"
+          pathName="rugby_image_path"
+          defaultValue={settings?.rugby_image_url}
+          defaultPath={settings?.rugby_image_path}
+          folder="home/rugby"
+          label="Rugby"
+          description="Imagen utilizada en la sección de Rugby."
+        />
+
+        <ImageUploader
+          name="hockey_image_url"
+          pathName="hockey_image_path"
+          defaultValue={settings?.hockey_image_url}
+          defaultPath={settings?.hockey_image_path}
+          folder="home/hockey"
+          label="Hockey"
+          description="Imagen utilizada en la sección de Hockey."
+        />
+
+        <ImageUploader
+          name="history_image_url"
+          pathName="history_image_path"
+          defaultValue={settings?.history_image_url}
+          defaultPath={settings?.history_image_path}
+          folder="home/history"
+          label="Imagen institucional"
+          description='Imagen utilizada en la sección "Más que un club".'
+        />
+      </div>
+    </section>
       <Card>
         <div className="border-b border-gray-100 pb-5">
           <h2 className="text-lg font-bold text-gray-900">

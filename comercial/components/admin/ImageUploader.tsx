@@ -1,56 +1,73 @@
 'use client'
 
 import { ChangeEvent, useState } from 'react'
+
 import { createClient } from '@/lib/supabase/client'
 
 type ImageUploaderProps = {
-  initialUrl?: string | null
+  name: string
+  pathName?: string
+  defaultValue?: string | null
+  defaultPath?: string | null
+  folder?: string
+  label?: string
+  description?: string
 }
 
 export default function ImageUploader({
-  initialUrl,
+  name,
+  pathName,
+  defaultValue = null,
+  defaultPath = null,
+  folder = 'uploads',
+  label = 'Imagen',
+  description = 'JPG, PNG o WebP. Máximo 5 MB.',
 }: ImageUploaderProps) {
-  const [imageUrl, setImageUrl] = useState(initialUrl ?? '')
-  const [isUploading, setIsUploading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
+  const supabase = createClient()
 
-  async function handleFileChange(
+  const [imageUrl, setImageUrl] = useState(defaultValue ?? '')
+  const [imagePath, setImagePath] = useState(defaultPath ?? '')
+  const [uploading, setUploading] = useState(false)
+  const [error, setError] = useState('')
+
+  async function handleUpload(
     event: ChangeEvent<HTMLInputElement>
   ) {
     const file = event.target.files?.[0]
 
-    if (!file) {
+    if (!file) return
+
+    setError('')
+
+    const allowedTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+    ]
+
+    if (!allowedTypes.includes(file.type)) {
+      setError('Solo se permiten imágenes JPG, PNG o WebP.')
       return
     }
 
-    setErrorMessage('')
-
-    if (!file.type.startsWith('image/')) {
-      setErrorMessage('El archivo seleccionado debe ser una imagen.')
-      event.target.value = ''
+    if (file.size > 5 * 1024 * 1024) {
+      setError('La imagen no puede superar los 5 MB.')
       return
     }
 
-    const maxSize = 5 * 1024 * 1024
-
-    if (file.size > maxSize) {
-      setErrorMessage('La imagen no puede superar los 5 MB.')
-      event.target.value = ''
-      return
-    }
-
-    setIsUploading(true)
+    setUploading(true)
 
     try {
-      const supabase = createClient()
+      const extension =
+        file.name.split('.').pop()?.toLowerCase() || 'jpg'
 
-      const extension = file.name.split('.').pop()?.toLowerCase() ?? 'jpg'
-      const fileName = `${crypto.randomUUID()}.${extension}`
-      const filePath = `posts/${fileName}`
+      const safeName = `${Date.now()}-${crypto.randomUUID()}.${extension}`
+
+      const storagePath = `${folder}/${safeName}`
 
       const { error: uploadError } = await supabase.storage
         .from('site-assets')
-        .upload(filePath, file, {
+        .upload(storagePath, file, {
           cacheControl: '3600',
           upsert: false,
         })
@@ -61,102 +78,108 @@ export default function ImageUploader({
 
       const { data } = supabase.storage
         .from('site-assets')
-        .getPublicUrl(filePath)
+        .getPublicUrl(storagePath)
 
       setImageUrl(data.publicUrl)
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : 'No se pudo subir la imagen.'
-
-      setErrorMessage(message)
+      setImagePath(storagePath)
+    } catch (err) {
+      console.error(err)
+      setError('No se pudo subir la imagen.')
     } finally {
-      setIsUploading(false)
+      setUploading(false)
+
+      event.target.value = ''
     }
   }
 
   return (
     <div>
-      <label
-        htmlFor="cover-image"
-        className="block text-sm font-medium text-gray-700"
-      >
-        Imagen de portada
-      </label>
+      <p className="mb-2 text-sm font-semibold text-gray-900">
+        {label}
+      </p>
 
       <input
         type="hidden"
-        name="cover_image_url"
+        name={name}
         value={imageUrl}
       />
 
-      <div className="mt-2 rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-5">
+      {pathName && (
+        <input
+          type="hidden"
+          name={pathName}
+          value={imagePath}
+        />
+      )}
+
+      <div className="overflow-hidden rounded-2xl border border-dashed border-gray-300 bg-gray-50">
         {imageUrl ? (
-          <div>
+          <div className="p-5">
             <img
               src={imageUrl}
-              alt="Vista previa de la portada"
-              className="h-56 w-full rounded-xl object-cover"
+              alt={label}
+              className="h-52 w-full rounded-xl object-cover"
             />
 
-            <div className="mt-4 flex flex-wrap gap-3">
-              <label
-                htmlFor="cover-image"
-                className="cursor-pointer rounded-lg bg-cyan-600 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-700"
-              >
-                Cambiar imagen
+            <div className="mt-4 flex items-center gap-3">
+              <label className="cursor-pointer rounded-lg bg-cyan-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-cyan-700">
+                {uploading
+                  ? 'Subiendo...'
+                  : 'Cambiar imagen'}
+
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  className="hidden"
+                  disabled={uploading}
+                  onChange={handleUpload}
+                />
               </label>
 
               <button
                 type="button"
-                onClick={() => setImageUrl('')}
-                className="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-100"
+                onClick={() => {
+                  setImageUrl('')
+                  setImagePath('')
+                }}
+                className="text-sm font-semibold text-red-600 hover:text-red-700"
               >
-                Quitar imagen
+                Quitar
               </button>
             </div>
           </div>
         ) : (
-          <div className="py-6 text-center">
-            <p className="font-medium text-gray-800">
-              Seleccioná una imagen de portada
+          <label className="flex min-h-48 cursor-pointer flex-col items-center justify-center p-8 text-center">
+            <p className="font-semibold text-gray-900">
+              Seleccioná una imagen
             </p>
 
             <p className="mt-1 text-sm text-gray-500">
-              JPG, PNG o WebP. Máximo 5 MB.
+              {description}
             </p>
 
-            <label
-              htmlFor="cover-image"
-              className="mt-4 inline-block cursor-pointer rounded-lg bg-cyan-600 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-700"
-            >
-              Elegir imagen
-            </label>
-          </div>
-        )}
+            <span className="mt-5 rounded-lg bg-cyan-600 px-4 py-2 text-sm font-bold text-white">
+              {uploading
+                ? 'Subiendo...'
+                : 'Elegir imagen'}
+            </span>
 
-        <input
-          id="cover-image"
-          type="file"
-          accept="image/png,image/jpeg,image/webp"
-          onChange={handleFileChange}
-          disabled={isUploading}
-          className="hidden"
-        />
-
-        {isUploading && (
-          <p className="mt-3 text-sm font-medium text-cyan-700">
-            Subiendo imagen...
-          </p>
-        )}
-
-        {errorMessage && (
-          <p className="mt-3 text-sm font-medium text-red-600">
-            {errorMessage}
-          </p>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              className="hidden"
+              disabled={uploading}
+              onChange={handleUpload}
+            />
+          </label>
         )}
       </div>
+
+      {error && (
+        <p className="mt-2 text-sm font-medium text-red-600">
+          {error}
+        </p>
+      )}
     </div>
   )
 }

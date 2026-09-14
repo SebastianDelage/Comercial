@@ -20,7 +20,11 @@ export async function getPublicHomeData() {
         address,
         phone,
         contact_email,
-        whatsapp_number
+        whatsapp_number,
+        hero_image_url,
+        rugby_image_url,
+        hockey_image_url,
+        history_image_url
       `)
       .eq('id', 'general')
       .maybeSingle(),
@@ -88,6 +92,13 @@ export async function getPublicHomeData() {
     console.error(
       'Error cargando galería:',
       albumsResult.error
+    )
+  }
+
+  if (historyResult.error) {
+    console.error(
+      'Error cargando historia:',
+      historyResult.error
     )
   }
 
