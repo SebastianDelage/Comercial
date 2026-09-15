@@ -2,6 +2,11 @@ import Link from 'next/link'
 
 import { getPublicHomeData } from '@/lib/queries/public-home'
 
+const CLUB_NAME = 'Comercial Rugby Club'
+
+const CLUB_DESCRIPTION =
+  'Un club donde el deporte, la formación y el sentido de pertenencia se viven dentro y fuera de la cancha.'
+
 function cleanHtmlText(html: string) {
   return html
     .replace(/<[^>]*>/g, ' ')
@@ -11,14 +16,10 @@ function cleanHtmlText(html: string) {
 
 export default async function HomePage() {
   const {
-    settings,
     posts,
     albums,
     history,
   } = await getPublicHomeData()
-
-  const clubName =
-    settings?.club_name || 'Comercial Rugby Club'
 
   const historyText = history?.content
     ? cleanHtmlText(history.content).slice(0, 330)
@@ -29,11 +30,8 @@ export default async function HomePage() {
       {/* HERO */}
       <section className="relative min-h-[720px] overflow-hidden bg-slate-950">
         <img
-          src={
-            settings?.hero_image_url ||
-            '/images/hero-club.jpg'
-          }
-          alt={`Actividad deportiva en ${clubName}`}
+          src="/images/home/hero.jpg"
+          alt={`Actividad deportiva en ${CLUB_NAME}`}
           className="absolute inset-0 h-full w-full object-cover"
         />
 
@@ -57,8 +55,7 @@ export default async function HomePage() {
             </h1>
 
             <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-200 sm:text-xl">
-              {settings?.short_description ||
-                'Un club donde el deporte, la formación y el sentido de pertenencia se viven dentro y fuera de la cancha.'}
+              {CLUB_DESCRIPTION}
             </p>
 
             <div className="mt-9 flex flex-wrap gap-4">
@@ -147,15 +144,13 @@ export default async function HomePage() {
         </div>
 
         <div className="mt-14 grid gap-8 lg:grid-cols-2">
+          {/* RUGBY */}
           <Link
             href="/rugby"
             className="group relative min-h-[560px] overflow-hidden rounded-[2rem] bg-slate-950"
           >
             <img
-              src={
-                settings?.rugby_image_url ||
-                '/images/rugby.jpg'
-              }
+              src="/images/home/rugby.jpg"
               alt="Rugby de Comercial Rugby Club"
               className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
             />
@@ -181,15 +176,13 @@ export default async function HomePage() {
             </div>
           </Link>
 
+          {/* HOCKEY */}
           <Link
             href="/hockey"
             className="group relative min-h-[560px] overflow-hidden rounded-[2rem] bg-slate-950"
           >
             <img
-              src={
-                settings?.hockey_image_url ||
-                '/images/hockey.jpg'
-              }
+              src="/images/home/hockey.jpg"
               alt="Hockey de Comercial Rugby Club"
               className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
             />
@@ -297,11 +290,8 @@ export default async function HomePage() {
       <section className="mx-auto grid max-w-7xl gap-12 px-6 py-24 lg:grid-cols-2 lg:items-center lg:px-8">
         <div className="overflow-hidden rounded-3xl bg-cyan-100">
           <img
-            src={
-              settings?.history_image_url ||
-              '/images/club-history.jpg'
-            }
-            alt={`Historia de ${clubName}`}
+            src="/images/home/club.jpg"
+            alt={`Historia de ${CLUB_NAME}`}
             className="aspect-[4/3] w-full object-cover"
           />
         </div>
@@ -317,6 +307,7 @@ export default async function HomePage() {
 
           <p className="mt-6 text-lg leading-8 text-gray-600">
             {historyText}
+
             {history?.content &&
               cleanHtmlText(history.content).length > 330 &&
               '...'}

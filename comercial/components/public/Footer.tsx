@@ -1,17 +1,6 @@
 import Link from 'next/link'
 
-type FooterProps = {
-  clubName: string
-  shortDescription?: string | null
-  logoUrl?: string | null
-  address?: string | null
-  phone?: string | null
-  contactEmail?: string | null
-  whatsappNumber?: string | null
-  instagramUrl?: string | null
-  facebookUrl?: string | null
-  youtubeUrl?: string | null
-}
+const CLUB_NAME = 'Comercial Rugby Club'
 
 const institutionalLinks = [
   {
@@ -43,40 +32,20 @@ const sportsLinks = [
   },
 ]
 
-export default function Footer({
-  clubName,
-  shortDescription,
-  logoUrl,
-  address,
-  phone,
-  contactEmail,
-  whatsappNumber,
-  instagramUrl,
-  facebookUrl,
-  youtubeUrl,
-}: FooterProps) {
+export default function Footer() {
   const currentYear = new Date().getFullYear()
-
-  const whatsappUrl = whatsappNumber
-    ? `https://wa.me/${whatsappNumber.replace(/\D/g, '')}`
-    : null
 
   return (
     <footer className="bg-slate-950 text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
+        {/* CLUB */}
         <div>
           <div className="flex items-center gap-4">
-            {logoUrl ? (
-              <img
-                src={logoUrl}
-                alt={`Escudo de ${clubName}`}
-                className="h-16 w-16 object-contain"
-              />
-            ) : (
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-cyan-600 font-black">
-                CRC
-              </div>
-            )}
+            <img
+              src="/images/branding/logo.png"
+              alt={`Escudo de ${CLUB_NAME}`}
+              className="h-16 w-16 object-contain"
+            />
 
             <div>
               <p className="font-black uppercase tracking-[0.15em] text-cyan-400">
@@ -89,13 +58,12 @@ export default function Footer({
             </div>
           </div>
 
-          {shortDescription && (
-            <p className="mt-5 max-w-sm text-sm leading-7 text-slate-300">
-              {shortDescription}
-            </p>
-          )}
+          <p className="mt-5 max-w-sm text-sm leading-7 text-slate-300">
+            Rugby, hockey, formación, amistad y sentido de pertenencia.
+          </p>
         </div>
 
+        {/* EL CLUB */}
         <div>
           <h2 className="text-sm font-black uppercase tracking-[0.16em] text-cyan-400">
             El club
@@ -115,6 +83,7 @@ export default function Footer({
           </ul>
         </div>
 
+        {/* DEPORTES */}
         <div>
           <h2 className="text-sm font-black uppercase tracking-[0.16em] text-cyan-400">
             Deportes
@@ -132,114 +101,35 @@ export default function Footer({
               </li>
             ))}
           </ul>
-
-          <div className="mt-7 flex flex-wrap gap-3">
-            {instagramUrl && (
-              <a
-                href={instagramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-lg border border-white/15 px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-white/10"
-              >
-                Instagram
-              </a>
-            )}
-
-            {facebookUrl && (
-              <a
-                href={facebookUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-lg border border-white/15 px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-white/10"
-              >
-                Facebook
-              </a>
-            )}
-
-            {youtubeUrl && (
-              <a
-                href={youtubeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-lg border border-white/15 px-3 py-2 text-xs font-semibold text-slate-200 hover:bg-white/10"
-              >
-                YouTube
-              </a>
-            )}
-          </div>
         </div>
 
+        {/* CONTACTO */}
         <div>
           <h2 className="text-sm font-black uppercase tracking-[0.16em] text-cyan-400">
             Contacto
           </h2>
 
           <div className="mt-5 space-y-4 text-sm leading-6 text-slate-300">
-            {address && (
-              <p>
-                <span className="block font-semibold text-white">
-                  Dirección
-                </span>
-                {address}
-              </p>
-            )}
+            <p>
+              Encontrá toda la información para comunicarte con
+              Comercial Rugby Club.
+            </p>
 
-            {phone && (
-              <p>
-                <span className="block font-semibold text-white">
-                  Teléfono
-                </span>
-
-                <a
-                  href={`tel:${phone}`}
-                  className="hover:text-white"
-                >
-                  {phone}
-                </a>
-              </p>
-            )}
-
-            {contactEmail && (
-              <p>
-                <span className="block font-semibold text-white">
-                  Correo
-                </span>
-
-                <a
-                  href={`mailto:${contactEmail}`}
-                  className="break-all hover:text-white"
-                >
-                  {contactEmail}
-                </a>
-              </p>
-            )}
-
-            {whatsappUrl && (
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex rounded-xl bg-cyan-600 px-4 py-3 font-bold text-white hover:bg-cyan-500"
-              >
-                Escribinos por WhatsApp
-              </a>
-            )}
+            <Link
+              href="/contacto"
+              className="inline-flex rounded-xl bg-cyan-600 px-4 py-3 font-bold text-white transition hover:bg-cyan-500"
+            >
+              Contactanos
+            </Link>
           </div>
         </div>
       </div>
 
       <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-5 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between lg:px-8">
+        <div className="mx-auto max-w-7xl px-6 py-5 text-xs text-slate-400 lg:px-8">
           <p>
-            © {currentYear} {clubName}. Todos los derechos reservados.
+            © {currentYear} {CLUB_NAME}. Todos los derechos reservados.
           </p>
-
-          <Link
-            href="/admin/login"
-            className="hover:text-white"
-          >
-            Administración
-          </Link>
         </div>
       </div>
     </footer>

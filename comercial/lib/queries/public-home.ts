@@ -6,29 +6,10 @@ export async function getPublicHomeData() {
   const supabase = await createClient()
 
   const [
-    settingsResult,
     postsResult,
     albumsResult,
     historyResult,
   ] = await Promise.all([
-    supabase
-      .from('site_settings')
-      .select(`
-        club_name,
-        short_description,
-        logo_url,
-        address,
-        phone,
-        contact_email,
-        whatsapp_number,
-        hero_image_url,
-        rugby_image_url,
-        hockey_image_url,
-        history_image_url
-      `)
-      .eq('id', 'general')
-      .maybeSingle(),
-
     supabase
       .from('posts')
       .select(`
@@ -74,13 +55,6 @@ export async function getPublicHomeData() {
       .maybeSingle(),
   ])
 
-  if (settingsResult.error) {
-    console.error(
-      'Error cargando configuración:',
-      settingsResult.error
-    )
-  }
-
   if (postsResult.error) {
     console.error(
       'Error cargando noticias:',
@@ -103,7 +77,6 @@ export async function getPublicHomeData() {
   }
 
   return {
-    settings: settingsResult.data,
     posts: postsResult.data ?? [],
     albums: albumsResult.data ?? [],
     history: historyResult.data,

@@ -5,10 +5,7 @@ import { usePathname } from 'next/navigation'
 
 import MobileMenu from '@/components/public/MobileMenu'
 
-type HeaderProps = {
-  clubName: string
-  logoUrl?: string | null
-}
+const CLUB_NAME = 'Comercial Rugby Club'
 
 const navigation = [
   {
@@ -41,10 +38,7 @@ const navigation = [
   },
 ]
 
-export default function Header({
-  clubName,
-  logoUrl,
-}: HeaderProps) {
+export default function Header() {
   const pathname = usePathname()
 
   function isActive(href: string) {
@@ -62,17 +56,11 @@ export default function Header({
           href="/"
           className="flex min-w-0 items-center gap-3"
         >
-          {logoUrl ? (
-            <img
-              src={logoUrl}
-              alt={`Escudo de ${clubName}`}
-              className="h-14 w-14 shrink-0 object-contain"
-            />
-          ) : (
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 border-cyan-600 bg-cyan-50 text-sm font-black text-cyan-700">
-              CRC
-            </div>
-          )}
+          <img
+            src="/images/branding/logo.png"
+            alt={`Escudo de ${CLUB_NAME}`}
+            className="h-14 w-14 shrink-0 object-contain"
+          />
 
           <div className="min-w-0">
             <p className="truncate text-sm font-black uppercase tracking-[0.12em] text-cyan-700">
@@ -109,7 +97,7 @@ export default function Header({
           </Link>
         </nav>
 
-        <MobileMenu clubName={clubName} />
+        <MobileMenu clubName={CLUB_NAME} />
       </div>
     </header>
   )

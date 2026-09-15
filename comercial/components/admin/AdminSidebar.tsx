@@ -10,7 +10,6 @@ const links = [
   { href: '/admin/posts', label: 'Noticias' },
   { href: '/admin/pages', label: 'Páginas' },
   { href: '/admin/gallery', label: 'Galería' },
-  { href: '/admin/settings', label: 'Configuración' },
 ]
 
 export default function AdminSidebar() {
@@ -20,6 +19,7 @@ export default function AdminSidebar() {
     <aside className="flex min-h-screen w-72 flex-col bg-cyan-600 text-white">
       <div className="border-b border-white/20 p-6">
         <div className="text-2xl font-bold">CRC</div>
+
         <p className="text-sm text-cyan-100">
           Panel administrativo
         </p>
