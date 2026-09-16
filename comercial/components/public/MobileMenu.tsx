@@ -156,15 +156,6 @@ export default function MobileMenu({
                 ))}
               </ul>
             </nav>
-
-            <div className="border-t border-gray-100 p-5">
-              <Link
-                href="/contacto"
-                className="block rounded-xl bg-cyan-600 px-5 py-3 text-center text-sm font-bold text-white hover:bg-cyan-700"
-              >
-                Sumate al club
-              </Link>
-            </div>
           </aside>
         </div>
       )}

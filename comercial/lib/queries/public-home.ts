@@ -8,7 +8,6 @@ export async function getPublicHomeData() {
   const [
     postsResult,
     albumsResult,
-    historyResult,
   ] = await Promise.all([
     supabase
       .from('posts')
@@ -43,16 +42,6 @@ export async function getPublicHomeData() {
         nullsFirst: false,
       })
       .limit(3),
-
-    supabase
-      .from('pages')
-      .select(`
-        title,
-        slug,
-        content
-      `)
-      .eq('slug', 'historia-del-club')
-      .maybeSingle(),
   ])
 
   if (postsResult.error) {
@@ -69,16 +58,8 @@ export async function getPublicHomeData() {
     )
   }
 
-  if (historyResult.error) {
-    console.error(
-      'Error cargando historia:',
-      historyResult.error
-    )
-  }
-
   return {
     posts: postsResult.data ?? [],
     albums: albumsResult.data ?? [],
-    history: historyResult.data,
   }
 }

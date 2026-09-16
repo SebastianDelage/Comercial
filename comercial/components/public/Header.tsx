@@ -88,13 +88,6 @@ export default function Header() {
               {item.label}
             </Link>
           ))}
-
-          <Link
-            href="/contacto"
-            className="ml-3 rounded-xl bg-cyan-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-cyan-700"
-          >
-            Sumate
-          </Link>
         </nav>
 
         <MobileMenu clubName={CLUB_NAME} />

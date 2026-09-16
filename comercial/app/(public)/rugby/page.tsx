@@ -1,12 +1,51 @@
 import Link from 'next/link'
 
+const rugbyGroups = [
+  {
+    title: 'Infantiles',
+    age: '5 a 10 años',
+    schedule: 'Martes y jueves · 18:30 hs',
+    location: 'Club',
+  },
+  {
+    title: 'M6, M7 y M8',
+    age: null,
+    schedule: 'Martes y jueves · 18:30 hs',
+    location: 'Sede AZTK Arena',
+  },
+  {
+    title: 'M9 y M10',
+    age: null,
+    schedule: 'Lunes y jueves · 18:00 hs',
+    location: 'Sede AZTK Arena',
+  },
+  {
+    title: 'Juveniles',
+    age: '11 a 17 años',
+    schedule: 'Martes y jueves · 18:30 hs',
+    location: 'Club',
+  },
+  {
+    title: 'M19 y Plantel Superior',
+    age: null,
+    schedule: 'Lunes, martes y jueves · 20:00 hs',
+    location: 'Club',
+  },
+  {
+    title: 'Rugby Femenino',
+    age: null,
+    schedule: 'Martes y jueves · 18:30 hs',
+    location: 'Club',
+  },
+]
+
 export default function RugbyPage() {
   return (
     <>
       {/* HERO */}
       <section className="relative min-h-[620px] overflow-hidden bg-slate-950">
         <img
-          src="/images/rugby.jpg"
+          src="/images/rugby/hero.jpg"
           alt="Rugby de Comercial Rugby Club"
           className="absolute inset-0 h-full w-full object-cover"
         />
@@ -29,14 +68,12 @@ export default function RugbyPage() {
               Viví el rugby de Comercial dentro y fuera de la cancha.
             </p>
 
-            <div className="mt-8">
-              <Link
-                href="/contacto"
-                className="inline-flex rounded-xl bg-cyan-600 px-6 py-3.5 font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-cyan-500"
-              >
-                Quiero sumarme
-              </Link>
-            </div>
+            <Link
+              href="/contacto"
+              className="mt-8 inline-flex rounded-xl bg-cyan-600 px-6 py-3.5 font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-cyan-500"
+            >
+              Quiero sumarme
+            </Link>
           </div>
         </div>
       </section>
@@ -61,168 +98,174 @@ export default function RugbyPage() {
             </p>
 
             <p className="mt-5 text-lg leading-8 text-gray-600">
-              Desde las categorías formativas hasta los planteles superiores,
-              cada jugador forma parte de una misma identidad.
+              Desde los primeros pasos hasta el Plantel Superior, cada jugador
+              forma parte de una misma identidad y de la comunidad de
+              Comercial.
             </p>
           </div>
 
           <div className="overflow-hidden rounded-3xl bg-slate-100">
             <img
-              src="/images/rugby.jpg"
-              alt="Entrenamiento de Rugby en Comercial"
+              src="/images/rugby/training.jpg"
+              alt="Entrenamiento de rugby de Comercial Rugby Club"
               className="aspect-[4/3] w-full object-cover"
             />
           </div>
         </div>
       </section>
 
-      {/* CATEGORÍAS */}
+      {/* CATEGORÍAS Y HORARIOS */}
       <section className="bg-slate-50 py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="max-w-3xl">
             <p className="text-sm font-black uppercase tracking-[0.2em] text-cyan-700">
-              Categorías
+              Categorías y entrenamientos
             </p>
 
-            <h2 className="mt-3 text-4xl font-black text-gray-950">
-              Rugby para todas las etapas
+            <h2 className="mt-3 text-4xl font-black text-gray-950 sm:text-5xl">
+              Encontrá tu lugar en la cancha
             </h2>
 
             <p className="mt-5 text-lg leading-8 text-gray-600">
-              Desde los primeros pasos hasta la competencia de plantel superior.
+              Conocé las categorías, días, horarios y sedes de entrenamiento
+              del rugby de Comercial.
             </p>
           </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                title: 'Infantiles',
-                description:
-                  'Primeros pasos en el rugby, aprendizaje y formación.',
-              },
-              {
-                title: 'Juveniles',
-                description:
-                  'Desarrollo deportivo, técnico y competitivo.',
-              },
-              {
-                title: 'Plantel Superior',
-                description:
-                  'Competencia, preparación y representación del club.',
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="rounded-2xl border border-gray-200 bg-white p-7 shadow-sm"
+          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {rugbyGroups.map((group) => (
+              <article
+                key={group.title}
+                className="flex flex-col rounded-3xl border border-gray-200 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
               >
-                <span className="text-xs font-black uppercase tracking-[0.18em] text-cyan-600">
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-cyan-600">
                   CRC Rugby
-                </span>
+                </p>
 
                 <h3 className="mt-3 text-2xl font-black text-gray-950">
-                  {item.title}
+                  {group.title}
                 </h3>
 
-                <p className="mt-3 leading-7 text-gray-600">
-                  {item.description}
-                </p>
-              </div>
+                {group.age && (
+                  <p className="mt-1 font-semibold text-gray-500">
+                    {group.age}
+                  </p>
+                )}
+
+                <div className="mt-7 border-t border-gray-100 pt-6">
+                  <p className="text-sm font-black uppercase tracking-[0.12em] text-gray-400">
+                    Entrenamiento
+                  </p>
+
+                  <p className="mt-2 font-bold text-gray-950">
+                    {group.schedule}
+                  </p>
+
+                  <p className="mt-2 text-sm font-semibold text-cyan-700">
+                    {group.location}
+                  </p>
+                </div>
+              </article>
             ))}
+          </div>
+
+          {/* SÁBADOS */}
+          <div className="mt-6 rounded-3xl bg-cyan-600 p-7 text-white sm:flex sm:items-center sm:justify-between sm:gap-8 lg:p-8">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-cyan-100">
+                Sábados
+              </p>
+
+              <h3 className="mt-2 text-2xl font-black">
+                Todas las divisiones
+              </h3>
+            </div>
+
+            <div className="mt-5 sm:mt-0 sm:text-right">
+              <p className="text-lg font-black">
+                10:00 hs
+              </p>
+
+              <p className="mt-1 text-sm font-medium text-cyan-50">
+                En el Club
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ENTRENAMIENTOS */}
+      {/* SEDES */}
       <section className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-start">
+        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
           <div>
             <p className="text-sm font-black uppercase tracking-[0.2em] text-cyan-700">
-              Entrenamientos
+              Dónde entrenamos
             </p>
 
-            <h2 className="mt-3 text-4xl font-black text-gray-950">
-              Horarios
+            <h2 className="mt-3 text-4xl font-black text-gray-950 sm:text-5xl">
+              Nuestras sedes
             </h2>
 
-            <p className="mt-5 text-lg leading-8 text-gray-600">
-              Los horarios pueden variar según la categoría y la época del año.
-              Contactanos para conocer la información actualizada.
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              Los entrenamientos se desarrollan entre nuestra sede principal
+              y AZTK Arena, según la categoría.
             </p>
 
             <Link
               href="/contacto"
-              className="mt-7 inline-flex font-bold text-cyan-700 hover:text-cyan-800"
+              className="mt-8 inline-flex rounded-xl bg-cyan-600 px-6 py-3.5 font-bold text-white transition hover:bg-cyan-700"
             >
-              Consultar por una categoría →
+              Consultar por Rugby
             </Link>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
-            {[
-              {
-                category: 'Infantiles',
-                schedule: 'Consultar días y horarios',
-              },
-              {
-                category: 'Juveniles',
-                schedule: 'Consultar días y horarios',
-              },
-              {
-                category: 'Plantel Superior',
-                schedule: 'Consultar días y horarios',
-              },
-            ].map((item, index) => (
-              <div
-                key={item.category}
-                className={`flex flex-col gap-2 p-6 sm:flex-row sm:items-center sm:justify-between ${
-                  index !== 2 ? 'border-b border-gray-100' : ''
-                }`}
+          <div className="grid gap-5 sm:grid-cols-2">
+            {/* CLUB */}
+            <div className="rounded-3xl border border-gray-200 bg-white p-7">
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-cyan-600">
+                Sede principal
+              </p>
+
+              <h3 className="mt-3 text-2xl font-black text-gray-950">
+                Comercial Rugby Club
+              </h3>
+
+              <p className="mt-4 leading-7 text-gray-600">
+                Ruta 226, km 17,5
+              </p>
+
+              <p className="text-gray-600">
+                Sierra de los Padres
+              </p>
+
+              <a
+                href="https://www.google.com/maps/place/Comercial+Rugby+Club/@-37.9126182,-57.7524213,16z/data=!4m6!3m5!1s0x95852ebcbf3e7a17:0x26cf1a163a8de9bf!8m2!3d-37.9116532!4d-57.7529363!16s%2Fg%2F11bzv0q6d1"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-6 inline-flex font-bold text-cyan-700 transition hover:text-cyan-800"
               >
-                <p className="font-black text-gray-950">
-                  {item.category}
-                </p>
+                Cómo llegar →
+              </a>
+            </div>
 
-                <p className="text-sm font-medium text-gray-500">
-                  {item.schedule}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            {/* AZTK */}
+            <div className="rounded-3xl border border-gray-200 bg-white p-7">
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-cyan-600">
+                Sede AZTK Arena
+              </p>
 
-      {/* VALORES */}
-      <section className="bg-slate-950 py-24 text-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <p className="text-sm font-black uppercase tracking-[0.2em] text-cyan-400">
-              Nuestra identidad
-            </p>
+              <h3 className="mt-3 text-2xl font-black text-gray-950">
+                AZTK Arena
+              </h3>
 
-            <h2 className="mt-3 text-4xl font-black sm:text-5xl">
-              Lo que aprendemos en la cancha
-              <span className="block text-cyan-400">
-                lo llevamos afuera.
-              </span>
-            </h2>
-          </div>
+              <p className="mt-4 leading-7 text-gray-600">
+                San Martín 5521
+              </p>
 
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              'Compromiso',
-              'Respeto',
-              'Compañerismo',
-              'Pertenencia',
-            ].map((value) => (
-              <div
-                key={value}
-                className="rounded-2xl border border-white/10 bg-white/5 p-7"
-              >
-                <p className="text-xl font-black">
-                  {value}
-                </p>
-              </div>
-            ))}
+              <p className="text-gray-600">
+                Mar del Plata
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -240,14 +283,14 @@ export default function RugbyPage() {
             </h2>
 
             <p className="mt-4 max-w-xl text-lg leading-8 text-cyan-50">
-              Escribinos y te contamos qué categoría te corresponde y cómo
-              empezar.
+              Si tenés dudas sobre qué categoría te corresponde, comunicate
+              con nosotros y te orientamos.
             </p>
           </div>
 
           <Link
             href="/contacto"
-            className="inline-flex w-fit rounded-xl bg-white px-6 py-3.5 font-bold text-cyan-800 hover:bg-cyan-50"
+            className="inline-flex w-fit shrink-0 rounded-xl bg-white px-6 py-3.5 font-bold text-cyan-800 transition hover:bg-cyan-50"
           >
             Quiero sumarme
           </Link>

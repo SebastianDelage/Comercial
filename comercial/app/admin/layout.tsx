@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+
 import { createClient } from '@/lib/supabase/server'
 import AdminSidebar from '@/components/admin/AdminSidebar'
 
@@ -27,25 +28,53 @@ export default async function AdminLayout({
     redirect('/admin/login')
   }
 
+  const roleLabel =
+    profile.role === 'admin' ? 'Administrador' : 'Editor'
+
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50 lg:flex">
       <AdminSidebar />
 
-      <div className="flex flex-1 flex-col">
-        <header className="flex h-20 items-center justify-between border-b bg-white px-8">
-          <div>
-            <p className="text-sm text-gray-500">Comercial Rugby Club</p>
-            <h2 className="text-lg font-semibold text-gray-900">
-              Administración
-            </h2>
-          </div>
+      <div className="min-w-0 flex-1">
+        {/* HEADER SUPERIOR */}
+        <header className="border-b border-slate-200 bg-white">
+          <div className="flex h-20 items-center justify-between gap-6 px-6 lg:px-10">
+            <div className="min-w-0">
+              <p className="truncate text-xs font-bold uppercase tracking-[0.16em] text-cyan-700">
+                Comercial Rugby Club
+              </p>
 
-          <div className="rounded-full bg-cyan-100 px-4 py-2 text-sm font-medium text-cyan-700">
-            Administrador
+              <p className="mt-1 text-sm text-slate-500">
+                Panel de administración
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <a
+                href="/"
+                target="_blank"
+                rel="noreferrer"
+                className="hidden rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:border-cyan-200 hover:bg-cyan-50 hover:text-cyan-800 sm:inline-flex"
+              >
+                Ver sitio
+                <span className="ml-2" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+
+              <div className="rounded-full bg-cyan-50 px-4 py-2 text-sm font-bold text-cyan-800">
+                {roleLabel}
+              </div>
+            </div>
           </div>
         </header>
 
-        <main className="flex-1 p-8">{children}</main>
+        {/* CONTENIDO */}
+        <main className="px-6 py-8 lg:px-10 lg:py-10">
+          <div className="mx-auto w-full max-w-[1400px]">
+            {children}
+          </div>
+        </main>
       </div>
     </div>
   )
