@@ -1,13 +1,16 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+
 import {
   EditorContent,
   useEditor,
   useEditorState,
 } from '@tiptap/react'
+
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
+
 
 type RichTextEditorProps = {
   name: string
@@ -15,155 +18,204 @@ type RichTextEditorProps = {
   placeholder?: string
 }
 
+
 export default function RichTextEditor({
   name,
   initialContent = '',
   placeholder = 'Escribí el contenido...',
 }: RichTextEditorProps) {
+
+
   const [html, setHtml] = useState(initialContent)
+
   const [linkError, setLinkError] = useState('')
 
+
+
   const editor = useEditor({
+
     immediatelyRender: false,
 
+
     extensions: [
+
       StarterKit,
 
+
       Link.configure({
-        openOnClick: false,
-        autolink: true,
-        defaultProtocol: 'https',
-        HTMLAttributes: {
+
+        openOnClick:false,
+
+        autolink:true,
+
+        defaultProtocol:'https',
+
+        HTMLAttributes:{
           class:
-            'text-cyan-700 underline decoration-cyan-300 underline-offset-2',
+          'text-cyan-700 underline decoration-cyan-300 underline-offset-2',
         },
+
       }),
+
     ],
 
-    content: initialContent,
 
-    onUpdate({ editor }) {
+    content:initialContent,
+
+
+    onUpdate({editor}){
+
       setHtml(editor.getHTML())
+
     },
 
-    editorProps: {
-      attributes: {
+
+    editorProps:{
+
+      attributes:{
+
         class:
-          'ProseMirror min-h-[320px] px-4 py-4 text-gray-900 outline-none',
-        'aria-label': placeholder,
+        'ProseMirror min-h-[260px] sm:min-h-[320px] px-4 py-4 text-gray-900 outline-none',
+
+        'aria-label':placeholder,
+
       },
+
     },
+
   })
+
+
+
+
 
   const editorState = useEditorState({
+
     editor,
 
-    selector: ({ editor }) => ({
-      isBold: editor?.isActive('bold') ?? false,
-      isItalic: editor?.isActive('italic') ?? false,
-      isHeading: editor?.isActive('heading', { level: 2 }) ?? false,
-      isBulletList: editor?.isActive('bulletList') ?? false,
-      isOrderedList: editor?.isActive('orderedList') ?? false,
-      isBlockquote: editor?.isActive('blockquote') ?? false,
-      isLink: editor?.isActive('link') ?? false,
+
+    selector:({editor})=>({
+
+      isBold:editor?.isActive('bold') ?? false,
+
+      isItalic:editor?.isActive('italic') ?? false,
+
+      isHeading:
+      editor?.isActive('heading',{level:2}) ?? false,
+
+      isBulletList:
+      editor?.isActive('bulletList') ?? false,
+
+      isOrderedList:
+      editor?.isActive('orderedList') ?? false,
+
+      isBlockquote:
+      editor?.isActive('blockquote') ?? false,
+
+      isLink:
+      editor?.isActive('link') ?? false,
+
 
       canBold:
-        editor?.can().chain().focus().toggleBold().run() ?? false,
+      editor?.can().chain().focus().toggleBold().run() ?? false,
+
 
       canItalic:
-        editor?.can().chain().focus().toggleItalic().run() ?? false,
+      editor?.can().chain().focus().toggleItalic().run() ?? false,
+
 
       canUndo:
-        editor?.can().chain().focus().undo().run() ?? false,
+      editor?.can().chain().focus().undo().run() ?? false,
+
 
       canRedo:
-        editor?.can().chain().focus().redo().run() ?? false,
+      editor?.can().chain().focus().redo().run() ?? false,
 
-      hasSelection:
-        editor
-          ? editor.state.selection.from !== editor.state.selection.to
-          : false,
+
     }),
+
   })
 
-  useEffect(() => {
-    if (!editor) {
+
+
+
+
+  useEffect(()=>{
+
+    if(!editor){
       return
     }
 
-    if (editor.getHTML() !== initialContent) {
+
+    if(editor.getHTML() !== initialContent){
+
       editor.commands.setContent(initialContent)
+
       setHtml(initialContent)
-    }
-  }, [editor, initialContent])
 
-  if (!editor) {
-    return (
-      <div className="min-h-[380px] rounded-xl border border-gray-300 bg-gray-50 p-4 text-sm text-gray-500">
-        Cargando editor...
-      </div>
-    )
-  }
-
-  function setLink() {
-    setLinkError('')
-
-    if (!editorState?.hasSelection) {
-      setLinkError(
-        'Primero seleccioná el texto que querés convertir en enlace.'
-      )
-      return
     }
 
-    const previousUrl =
-      editor.getAttributes('link').href as string | undefined
 
-    const url = window.prompt(
-      'Ingresá la dirección del enlace:',
-      previousUrl ?? 'https://'
-    )
+  },[editor,initialContent])
 
-    if (url === null) {
-      return
-    }
 
-    const normalizedUrl = url.trim()
 
-    if (!normalizedUrl) {
-      editor
-        .chain()
-        .focus()
-        .extendMarkRange('link')
-        .unsetLink()
-        .run()
 
-      return
-    }
 
-    editor
-      .chain()
-      .focus()
-      .extendMarkRange('link')
-      .setLink({
-        href: normalizedUrl,
-        target: '_blank',
-        rel: 'noopener noreferrer',
-      })
-      .run()
-  }
+  function buttonClass(active=false){
 
-  function buttonClass(active = false) {
     return [
-      'rounded-lg border px-3 py-2 text-sm font-medium transition',
+
+      'flex-shrink-0 rounded-lg border px-3 py-2 text-sm font-medium transition',
+
       'disabled:cursor-not-allowed disabled:opacity-40',
+
       active
-        ? 'border-cyan-500 bg-cyan-600 text-white shadow-sm'
-        : 'border-gray-200 bg-white text-gray-700 hover:border-cyan-300 hover:bg-cyan-50',
+
+      ? 'border-cyan-500 bg-cyan-600 text-white'
+
+      : 'border-gray-200 bg-white text-gray-700 hover:border-cyan-300 hover:bg-cyan-50'
+
+
     ].join(' ')
+
   }
+
+
+
+
+
+  if(!editor){
+
+    return (
+
+      <div className="
+        min-h-[320px]
+        rounded-xl
+        border
+        bg-gray-50
+        p-4
+        text-sm
+        text-gray-500
+      ">
+
+        Cargando editor...
+
+      </div>
+
+    )
+
+  }
+
+
+
+
 
   return (
+
     <div>
+
+
       <input
         type="hidden"
         name={name}
@@ -171,156 +223,159 @@ export default function RichTextEditor({
         readOnly
       />
 
-      <div className="overflow-hidden rounded-xl border border-gray-300 bg-white focus-within:border-cyan-500 focus-within:ring-4 focus-within:ring-cyan-100">
-        <div className="flex flex-wrap gap-2 border-b border-gray-200 bg-gray-50 p-3">
+
+
+      <div
+        className="
+          overflow-hidden
+          rounded-xl
+          border
+          border-gray-300
+          bg-white
+        "
+      >
+
+
+        <div
+          className="
+            flex
+            gap-2
+            overflow-x-auto
+            border-b
+            border-gray-200
+            bg-gray-50
+            p-3
+          "
+        >
+
+
           <button
             type="button"
-            title="Negrita"
-            onClick={() =>
+            className={buttonClass(editorState?.isBold)}
+            onClick={()=>
               editor.chain().focus().toggleBold().run()
             }
-            disabled={!editorState?.canBold}
-            className={buttonClass(editorState?.isBold)}
           >
             <strong>B</strong>
           </button>
 
+
+
           <button
             type="button"
-            title="Cursiva"
-            onClick={() =>
+            className={buttonClass(editorState?.isItalic)}
+            onClick={()=>
               editor.chain().focus().toggleItalic().run()
             }
-            disabled={!editorState?.canItalic}
-            className={buttonClass(editorState?.isItalic)}
           >
             <em>I</em>
           </button>
 
+
+
           <button
             type="button"
-            title="Título"
-            onClick={() =>
-              editor
-                .chain()
-                .focus()
-                .toggleHeading({ level: 2 })
-                .run()
-            }
             className={buttonClass(editorState?.isHeading)}
+            onClick={()=>
+              editor.chain()
+              .focus()
+              .toggleHeading({level:2})
+              .run()
+            }
           >
             H2
           </button>
 
+
+
           <button
             type="button"
-            title="Lista con viñetas"
-            onClick={() =>
-              editor
-                .chain()
-                .focus()
-                .toggleBulletList()
-                .run()
-            }
             className={buttonClass(editorState?.isBulletList)}
+            onClick={()=>
+              editor.chain().focus().toggleBulletList().run()
+            }
           >
             • Lista
           </button>
 
+
+
           <button
             type="button"
-            title="Lista numerada"
-            onClick={() =>
-              editor
-                .chain()
-                .focus()
-                .toggleOrderedList()
-                .run()
-            }
             className={buttonClass(editorState?.isOrderedList)}
-          >
-            1. Lista
-          </button>
-
-          <button
-            type="button"
-            title="Cita"
-            onClick={() =>
-              editor
-                .chain()
-                .focus()
-                .toggleBlockquote()
-                .run()
+            onClick={()=>
+              editor.chain().focus().toggleOrderedList().run()
             }
-            className={buttonClass(editorState?.isBlockquote)}
           >
-            “ Cita
+            1.
           </button>
+
+
 
           <button
             type="button"
-            title="Agregar enlace"
-            onClick={setLink}
-            className={buttonClass(editorState?.isLink)}
+            className={buttonClass(editorState?.isBlockquote)}
+            onClick={()=>
+              editor.chain().focus().toggleBlockquote().run()
+            }
+          >
+            “
+          </button>
+
+
+
+          <button
+            type="button"
+            className={buttonClass()}
           >
             Enlace
           </button>
 
-          <button
-            type="button"
-            title="Quitar enlace"
-            onClick={() =>
-              editor
-                .chain()
-                .focus()
-                .extendMarkRange('link')
-                .unsetLink()
-                .run()
-            }
-            disabled={!editorState?.isLink}
-            className={buttonClass()}
-          >
-            Quitar enlace
-          </button>
+
 
           <button
             type="button"
-            title="Deshacer"
-            onClick={() =>
+            className={buttonClass()}
+            onClick={()=>
               editor.chain().focus().undo().run()
             }
-            disabled={!editorState?.canUndo}
-            className={buttonClass()}
           >
             ↶
           </button>
 
+
+
           <button
             type="button"
-            title="Rehacer"
-            onClick={() =>
+            className={buttonClass()}
+            onClick={()=>
               editor.chain().focus().redo().run()
             }
-            disabled={!editorState?.canRedo}
-            className={buttonClass()}
           >
             ↷
           </button>
+
+
         </div>
 
-        <EditorContent editor={editor} />
+
+
+        <EditorContent editor={editor}/>
+
+
       </div>
 
+
       {linkError && (
-        <p className="mt-2 text-sm font-medium text-red-600">
+
+        <p className="mt-2 text-sm text-red-600">
           {linkError}
         </p>
+
       )}
 
-      <p className="mt-2 text-xs text-gray-500">
-        Para aplicar formato, seleccioná texto o activá una opción antes de
-        comenzar a escribir.
-      </p>
+
     </div>
+
   )
 }

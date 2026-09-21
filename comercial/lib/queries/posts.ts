@@ -11,10 +11,13 @@ export async function getAdminPosts() {
       slug,
       status,
       cover_image_url,
+      cover_image_path,
       published_at,
       created_at
     `)
-    .order('created_at', { ascending: false })
+    .order('created_at', {
+      ascending: false,
+    })
 
   if (error) {
     throw new Error(error.message)
@@ -22,15 +25,25 @@ export async function getAdminPosts() {
 
   return data
 }
+
 
 export async function getPublishedPosts() {
   const supabase = await createClient()
 
   const { data, error } = await supabase
     .from('posts')
-    .select('id, title, slug, excerpt, cover_image_url, published_at')
+    .select(`
+      id,
+      title,
+      slug,
+      excerpt,
+      cover_image_url,
+      published_at
+    `)
     .eq('status', 'published')
-    .order('published_at', { ascending: false })
+    .order('published_at', {
+      ascending: false,
+    })
 
   if (error) {
     throw new Error(error.message)
@@ -38,6 +51,7 @@ export async function getPublishedPosts() {
 
   return data
 }
+
 
 export async function getPostBySlug(slug: string) {
   const supabase = await createClient()
@@ -51,6 +65,7 @@ export async function getPostBySlug(slug: string) {
       excerpt,
       content,
       cover_image_url,
+      cover_image_path,
       status,
       published_at
     `)
@@ -64,12 +79,22 @@ export async function getPostBySlug(slug: string) {
   return data
 }
 
+
 export async function getPostById(id: string) {
   const supabase = await createClient()
 
   const { data, error } = await supabase
     .from('posts')
-    .select('id, title, slug, excerpt, content, status, cover_image_url')
+    .select(`
+      id,
+      title,
+      slug,
+      excerpt,
+      content,
+      cover_image_url,
+      cover_image_path,
+      status
+    `)
     .eq('id', id)
     .single()
 

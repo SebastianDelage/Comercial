@@ -49,13 +49,17 @@ export default function MobileMenu({
     setIsOpen(false)
   }, [pathname])
 
+
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : ''
+    document.body.style.overflow = isOpen
+      ? 'hidden'
+      : ''
 
     return () => {
       document.body.style.overflow = ''
     }
   }, [isOpen])
+
 
   function isActive(href: string) {
     if (href === '/') {
@@ -65,82 +69,124 @@ export default function MobileMenu({
     return pathname.startsWith(href)
   }
 
+
   return (
     <>
+      {/* BOTÓN */}
       <button
         type="button"
         aria-label={
           isOpen
-            ? 'Cerrar menú de navegación'
-            : 'Abrir menú de navegación'
+            ? 'Cerrar menú'
+            : 'Abrir menú'
         }
         aria-expanded={isOpen}
-        onClick={() => setIsOpen((current) => !current)}
+        onClick={() => setIsOpen((value) => !value)}
         className="flex h-11 w-11 items-center justify-center rounded-xl border border-cyan-100 bg-white text-cyan-800 shadow-sm lg:hidden"
       >
         <span className="sr-only">
-          {isOpen ? 'Cerrar menú' : 'Abrir menú'}
+          Abrir menú
         </span>
 
         <div className="space-y-1.5">
+
           <span
             className={[
               'block h-0.5 w-6 bg-current transition',
-              isOpen ? 'translate-y-2 rotate-45' : '',
+              isOpen
+                ? 'translate-y-2 rotate-45'
+                : '',
             ].join(' ')}
           />
 
           <span
             className={[
               'block h-0.5 w-6 bg-current transition',
-              isOpen ? 'opacity-0' : '',
+              isOpen
+                ? 'opacity-0'
+                : '',
             ].join(' ')}
           />
 
           <span
             className={[
               'block h-0.5 w-6 bg-current transition',
-              isOpen ? '-translate-y-2 -rotate-45' : '',
+              isOpen
+                ? '-translate-y-2 -rotate-45'
+                : '',
             ].join(' ')}
           />
+
         </div>
       </button>
 
+
       {isOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-[999] lg:hidden">
+
+          {/* Fondo */}
           <button
             type="button"
             aria-label="Cerrar menú"
             onClick={() => setIsOpen(false)}
-            className="absolute inset-0 bg-slate-950/45 backdrop-blur-sm"
+            className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
           />
 
-          <aside className="absolute right-0 top-0 flex h-full w-[86%] max-w-sm flex-col bg-white shadow-2xl">
+
+          {/* Panel */}
+          <aside
+            className="
+              fixed
+              right-0
+              top-0
+              z-[1000]
+              flex
+              h-screen
+              w-[88%]
+              max-w-sm
+              flex-col
+              bg-white
+              shadow-2xl
+            "
+          >
+
+            {/* Header menú */}
             <div className="flex items-center justify-between border-b border-gray-100 px-6 py-5">
+
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-700">
+
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-700">
                   CRC
                 </p>
 
                 <p className="mt-1 font-bold text-gray-950">
                   {clubName}
                 </p>
+
               </div>
+
 
               <button
                 type="button"
                 aria-label="Cerrar menú"
                 onClick={() => setIsOpen(false)}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-2xl text-gray-700"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-xl font-bold text-gray-700 hover:bg-gray-200"
               >
                 ×
               </button>
+
             </div>
 
+
+            {/* Navegación */}
             <nav className="flex-1 overflow-y-auto p-5">
+
               <ul className="space-y-2">
+
                 {links.map((link) => (
+
                   <li key={link.href}>
+
                     <Link
                       href={link.href}
                       className={[
@@ -152,13 +198,33 @@ export default function MobileMenu({
                     >
                       {link.label}
                     </Link>
+
                   </li>
+
                 ))}
+
               </ul>
+
             </nav>
+
+
+            {/* CTA inferior */}
+            <div className="border-t border-gray-100 p-5">
+
+              <Link
+                href="/contacto"
+                className="block rounded-xl bg-cyan-600 px-5 py-3 text-center text-sm font-bold text-white transition hover:bg-cyan-700"
+              >
+                Quiero sumarme
+              </Link>
+
+            </div>
+
           </aside>
+
         </div>
       )}
+
     </>
   )
 }
