@@ -320,7 +320,7 @@ export default async function AdminGalleryPage() {
                           variant={
                             album.status === 'published'
                               ? 'success'
-                              : 'warning'
+                              : 'draft'
                           }
                         >
 

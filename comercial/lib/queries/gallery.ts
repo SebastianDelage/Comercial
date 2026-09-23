@@ -2,6 +2,7 @@ import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
 
+
 export async function getAdminAlbums() {
   const supabase = await createClient()
 
@@ -23,12 +24,16 @@ export async function getAdminAlbums() {
         id
       )
     `)
-    .order('display_order', { ascending: true })
+    .order('display_order', {
+      ascending: true,
+    })
     .order('event_date', {
       ascending: false,
       nullsFirst: false,
     })
-    .order('created_at', { ascending: false })
+    .order('created_at', {
+      ascending: false,
+    })
 
   if (error) {
     throw new Error(error.message)
@@ -36,6 +41,8 @@ export async function getAdminAlbums() {
 
   return data
 }
+
+
 
 export async function getAlbumById(id: string) {
   const supabase = await createClient()
@@ -65,6 +72,8 @@ export async function getAlbumById(id: string) {
   return data
 }
 
+
+
 export async function getPublishedAlbums() {
   const supabase = await createClient()
 
@@ -83,7 +92,9 @@ export async function getPublishedAlbums() {
       )
     `)
     .eq('status', 'published')
-    .order('display_order', { ascending: true })
+    .order('display_order', {
+      ascending: true,
+    })
     .order('event_date', {
       ascending: false,
       nullsFirst: false,
@@ -96,7 +107,11 @@ export async function getPublishedAlbums() {
   return data
 }
 
-export async function getPublishedAlbumBySlug(slug: string) {
+
+
+export async function getPublishedAlbumBySlug(
+  slug: string
+) {
   const supabase = await createClient()
 
   const { data, error } = await supabase
@@ -134,7 +149,11 @@ export async function getPublishedAlbumBySlug(slug: string) {
   return data
 }
 
-export async function getAlbumWithImagesById(id: string) {
+
+
+export async function getAlbumWithImagesById(
+  id: string
+) {
   const supabase = await createClient()
 
   const { data, error } = await supabase
@@ -145,7 +164,10 @@ export async function getAlbumWithImagesById(id: string) {
       slug,
       description,
       cover_image_url,
+      cover_image_path,
+      event_date,
       status,
+      display_order,
       gallery_images (
         id,
         image_url,

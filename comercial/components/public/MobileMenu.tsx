@@ -4,9 +4,11 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+
 type MobileMenuProps = {
   clubName: string
 }
+
 
 const links = [
   {
@@ -39,40 +41,87 @@ const links = [
   },
 ]
 
+
+
 export default function MobileMenu({
   clubName,
 }: MobileMenuProps) {
+
   const pathname = usePathname()
+
   const [isOpen, setIsOpen] = useState(false)
+
+
 
   useEffect(() => {
     setIsOpen(false)
   }, [pathname])
 
 
+
   useEffect(() => {
-    document.body.style.overflow = isOpen
-      ? 'hidden'
-      : ''
+
+    if (!isOpen) {
+      document.body.style.overflow = ''
+      return
+    }
+
+
+    document.body.style.overflow = 'hidden'
+
+
+    function handleEscape(event: KeyboardEvent) {
+
+      if (event.key === 'Escape') {
+        setIsOpen(false)
+      }
+
+    }
+
+
+    window.addEventListener(
+      'keydown',
+      handleEscape
+    )
+
 
     return () => {
       document.body.style.overflow = ''
+      window.removeEventListener(
+        'keydown',
+        handleEscape
+      )
     }
+
   }, [isOpen])
 
 
+
+
+
   function isActive(href: string) {
+
     if (href === '/') {
       return pathname === '/'
     }
 
-    return pathname.startsWith(href)
+
+    return (
+      pathname === href ||
+      pathname.startsWith(`${href}/`)
+    )
+
   }
+
+
 
 
   return (
     <>
+
+
       {/* BOTÓN */}
+
       <button
         type="button"
         aria-label={
@@ -81,12 +130,18 @@ export default function MobileMenu({
             : 'Abrir menú'
         }
         aria-expanded={isOpen}
-        onClick={() => setIsOpen((value) => !value)}
+        onClick={() =>
+          setIsOpen((value) => !value)
+        }
         className="flex h-11 w-11 items-center justify-center rounded-xl border border-cyan-100 bg-white text-cyan-800 shadow-sm lg:hidden"
       >
+
         <span className="sr-only">
-          Abrir menú
+          {isOpen
+            ? 'Cerrar menú'
+            : 'Abrir menú'}
         </span>
+
 
         <div className="space-y-1.5">
 
@@ -99,6 +154,7 @@ export default function MobileMenu({
             ].join(' ')}
           />
 
+
           <span
             className={[
               'block h-0.5 w-6 bg-current transition',
@@ -107,6 +163,7 @@ export default function MobileMenu({
                 : '',
             ].join(' ')}
           />
+
 
           <span
             className={[
@@ -118,46 +175,56 @@ export default function MobileMenu({
           />
 
         </div>
+
       </button>
 
 
-      {isOpen && (
-        <div className="fixed inset-0 z-[999] lg:hidden">
 
-          {/* Fondo */}
+
+
+
+      {isOpen && (
+
+        <div
+          className="fixed inset-0 z-[999] lg:hidden"
+          role="dialog"
+          aria-modal="true"
+        >
+
+
+          {/* FONDO */}
+
           <button
             type="button"
             aria-label="Cerrar menú"
-            onClick={() => setIsOpen(false)}
+            onClick={() =>
+              setIsOpen(false)
+            }
             className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
           />
 
 
-          {/* Panel */}
+
+
+
+
+          {/* PANEL */}
+
           <aside
-            className="
-              fixed
-              right-0
-              top-0
-              z-[1000]
-              flex
-              h-screen
-              w-[88%]
-              max-w-sm
-              flex-col
-              bg-white
-              shadow-2xl
-            "
+            className="fixed right-0 top-0 z-[1000] flex h-screen w-[88%] max-w-sm flex-col bg-white shadow-2xl"
           >
 
-            {/* Header menú */}
+
+
             <div className="flex items-center justify-between border-b border-gray-100 px-6 py-5">
+
 
               <div>
 
                 <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-700">
                   CRC
                 </p>
+
 
                 <p className="mt-1 font-bold text-gray-950">
                   {clubName}
@@ -166,50 +233,85 @@ export default function MobileMenu({
               </div>
 
 
+
+
+
               <button
                 type="button"
                 aria-label="Cerrar menú"
-                onClick={() => setIsOpen(false)}
+                onClick={() =>
+                  setIsOpen(false)
+                }
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-xl font-bold text-gray-700 hover:bg-gray-200"
               >
                 ×
               </button>
 
+
             </div>
 
 
-            {/* Navegación */}
+
+
+
+
+
             <nav className="flex-1 overflow-y-auto p-5">
+
 
               <ul className="space-y-2">
 
-                {links.map((link) => (
 
-                  <li key={link.href}>
+                {links.map((link) => {
 
-                    <Link
-                      href={link.href}
-                      className={[
-                        'block rounded-xl px-4 py-3 text-base font-semibold transition',
-                        isActive(link.href)
-                          ? 'bg-cyan-600 text-white'
-                          : 'text-gray-700 hover:bg-cyan-50 hover:text-cyan-800',
-                      ].join(' ')}
-                    >
-                      {link.label}
-                    </Link>
+                  const active = isActive(link.href)
 
-                  </li>
 
-                ))}
+                  return (
+
+                    <li key={link.href}>
+
+
+                      <Link
+                        href={link.href}
+                        aria-current={
+                          active
+                            ? 'page'
+                            : undefined
+                        }
+                        className={[
+                          'block rounded-xl px-4 py-3 text-base font-semibold transition',
+                          active
+                            ? 'bg-cyan-600 text-white'
+                            : 'text-gray-700 hover:bg-cyan-50 hover:text-cyan-800',
+                        ].join(' ')}
+                      >
+
+                        {link.label}
+
+                      </Link>
+
+
+                    </li>
+
+                  )
+
+                })}
+
 
               </ul>
+
 
             </nav>
 
 
-            {/* CTA inferior */}
+
+
+
+
+
             <div className="border-t border-gray-100 p-5">
+
 
               <Link
                 href="/contacto"
@@ -218,11 +320,15 @@ export default function MobileMenu({
                 Quiero sumarme
               </Link>
 
+
             </div>
+
 
           </aside>
 
+
         </div>
+
       )}
 
     </>

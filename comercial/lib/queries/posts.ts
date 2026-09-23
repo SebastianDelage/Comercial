@@ -1,4 +1,7 @@
+import 'server-only'
+
 import { createClient } from '@/lib/supabase/server'
+
 
 export async function getAdminPosts() {
   const supabase = await createClient()
@@ -27,6 +30,9 @@ export async function getAdminPosts() {
 }
 
 
+
+
+
 export async function getPublishedPosts() {
   const supabase = await createClient()
 
@@ -53,7 +59,12 @@ export async function getPublishedPosts() {
 }
 
 
-export async function getPostBySlug(slug: string) {
+
+
+
+export async function getPostBySlug(
+  slug: string
+) {
   const supabase = await createClient()
 
   const { data, error } = await supabase
@@ -67,9 +78,11 @@ export async function getPostBySlug(slug: string) {
       cover_image_url,
       cover_image_path,
       status,
-      published_at
+      published_at,
+      created_at
     `)
     .eq('slug', slug)
+    .eq('status', 'published')
     .single()
 
   if (error) {
@@ -80,7 +93,12 @@ export async function getPostBySlug(slug: string) {
 }
 
 
-export async function getPostById(id: string) {
+
+
+
+export async function getPostById(
+  id: string
+) {
   const supabase = await createClient()
 
   const { data, error } = await supabase

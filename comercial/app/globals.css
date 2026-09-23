@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+
+/* =========================
+   TIPTAP EDITOR
+========================= */
+
 .ProseMirror {
   min-height: 320px;
 }
@@ -8,18 +13,58 @@
   outline: none;
 }
 
+
+/* =========================
+   CONTENIDO RICH TEXT
+========================= */
+
+
+.rich-content,
+.ProseMirror {
+  color: #374151;
+  line-height: 1.8;
+}
+
+
+/* TITULOS */
+
 .rich-content h2,
 .ProseMirror h2 {
-  margin-top: 1.75rem;
-  margin-bottom: 0.75rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
   font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+
+.rich-content h3,
+.ProseMirror h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
   font-weight: 700;
 }
 
+
+.rich-content h4,
+.ProseMirror h4 {
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+
+/* PARRAFOS */
+
 .rich-content p,
 .ProseMirror p {
-  margin: 0.75rem 0;
+  margin: 1rem 0;
 }
+
+
+/* LISTAS */
 
 .rich-content ul,
 .ProseMirror ul {
@@ -28,6 +73,7 @@
   list-style-type: disc;
 }
 
+
 .rich-content ol,
 .ProseMirror ol {
   margin: 1rem 0;
@@ -35,23 +81,78 @@
   list-style-type: decimal;
 }
 
+
 .rich-content li,
 .ProseMirror li {
-  margin: 0.35rem 0;
+  margin: 0.4rem 0;
 }
+
+
+/* CITAS */
 
 .rich-content blockquote,
 .ProseMirror blockquote {
-  margin: 1.25rem 0;
+  margin: 1.5rem 0;
   border-left: 4px solid #06b6d4;
   background: #ecfeff;
-  padding: 0.75rem 1rem;
+  padding: 1rem 1.25rem;
   color: #374151;
 }
+
+
+/* LINKS */
 
 .rich-content a,
 .ProseMirror a {
   color: #0891b2;
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: 3px;
+  transition: color .2s;
+}
+
+
+.rich-content a:hover,
+.ProseMirror a:hover {
+  color: #0e7490;
+}
+
+
+/* IMAGENES DENTRO DE NOTICIAS */
+
+.rich-content img,
+.ProseMirror img {
+  margin: 1.5rem auto;
+  max-width: 100%;
+  border-radius: 1rem;
+}
+
+
+/* TABLAS */
+
+.rich-content table,
+.ProseMirror table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+}
+
+
+.rich-content th,
+.rich-content td,
+.ProseMirror th,
+.ProseMirror td {
+  border: 1px solid #e5e7eb;
+  padding: .75rem;
+  text-align: left;
+}
+
+
+/* CODIGO */
+
+.rich-content code,
+.ProseMirror code {
+  border-radius: .375rem;
+  background: #f1f5f9;
+  padding: .15rem .35rem;
+  font-size: .875em;
 }
